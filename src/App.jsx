@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Studio } from 'sanity';
+import sanityConfig from '../sanity.config.js';
 import {
   TrendingUp,
   Target,
@@ -55,6 +57,10 @@ function App() {
   const [isHovered, setIsHovered] = useState(false);
   const [activeTestimonial, setActiveTestimonial] = useState(0);
   const [formSubmitted, setFormSubmitted] = useState(false);
+
+  if (typeof window !== 'undefined' && window.location.pathname.startsWith('/admin')) {
+    return <Studio config={sanityConfig} />;
+  }
 
   useEffect(() => {
     const handleMouseMove = (e) => {
