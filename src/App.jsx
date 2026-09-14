@@ -57,7 +57,6 @@ function App() {
   const [formSubmitted, setFormSubmitted] = useState(false);
 
   useEffect(() => {
-    // 1. Hardware Accelerated Custom Cursor
     const handleMouseMove = (e) => {
       if (cursorRef.current) {
         cursorRef.current.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0px) translate(-50%, -50%)`;
@@ -65,7 +64,6 @@ function App() {
     };
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
 
-    // 2. Hero Load Animation Sequence
     const heroTl = gsap.timeline({ defaults: { ease: 'power3.out' } });
     heroTl
       .fromTo('.navbar', { y: -30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8 })
@@ -74,7 +72,6 @@ function App() {
       .fromTo('.hero-actions', { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6 }, '-=0.4')
       .fromTo('.hero-image-clip', { scale: 1.15, opacity: 0 }, { scale: 1, opacity: 1, duration: 1.2, ease: 'power2.out' }, '-=1');
 
-    // 3. Section Divider Line Animations
     const dividerLines = document.querySelectorAll('.divider-line');
     dividerLines.forEach((line) => {
       gsap.fromTo(
@@ -92,7 +89,6 @@ function App() {
       );
     });
 
-    // 4. Reveal Text Mask Animations
     const revealTexts = document.querySelectorAll('.reveal-text');
     revealTexts.forEach((text) => {
       gsap.fromTo(
@@ -110,7 +106,6 @@ function App() {
       );
     });
 
-    // 5. Section Tags Line Expansion
     const sectionTags = document.querySelectorAll('.section-tag');
     sectionTags.forEach((tag) => {
       ScrollTrigger.create({
@@ -120,7 +115,6 @@ function App() {
       });
     });
 
-    // 6. Section Card Transitions
     const sections = document.querySelectorAll('.animate-section');
     sections.forEach((section) => {
       gsap.fromTo(
@@ -139,7 +133,6 @@ function App() {
       );
     });
 
-    // 7. Services Grid Stagger Animation
     gsap.fromTo(
       '.service-card',
       { y: 50, opacity: 0 },
@@ -156,7 +149,6 @@ function App() {
       }
     );
 
-    // 8. Impact Stats Stagger & Scale
     gsap.fromTo(
       '.stat-item',
       { y: 40, opacity: 0, scale: 0.95 },
@@ -174,7 +166,6 @@ function App() {
       }
     );
 
-    // 9. Markets Section List Rows
     gsap.fromTo(
       '.market-row',
       { x: 30, opacity: 0 },
@@ -216,13 +207,11 @@ function App() {
 
   return (
     <div className="site-wrapper">
-      {/* Custom Cursor */}
       <div
         ref={cursorRef}
         className={`custom-cursor ${isHovered ? 'hovered' : ''}`}
       ></div>
 
-      {/* Navigation */}
       <nav className="navbar">
         <div className="nav-container">
           <a href="#" className="brand-logo" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
@@ -263,7 +252,6 @@ function App() {
         </div>
       </nav>
 
-      {/* HERO SECTION */}
       <section id="home" className="hero-section">
         <div className="hero-grid">
           <div className="hero-content">
@@ -314,7 +302,6 @@ function App() {
         </div>
       </section>
 
-      {/* ABOUT JHP SECTION */}
       <section id="about" className="about-section animate-section">
         <div className="section-container grid-2">
           <div className="about-left">
@@ -373,12 +360,10 @@ function App() {
         </div>
       </section>
 
-      {/* SECTION DIVIDER LINE */}
       <div className="section-divider">
         <div className="divider-line"></div>
       </div>
 
-      {/* WHAT WE DO / SERVICES */}
       <section id="services" className="services-section animate-section">
         <div className="section-container">
           <div className="services-header grid-2">
@@ -496,7 +481,6 @@ function App() {
         </div>
       </section>
 
-      {/* OUR IMPACT / STATS BANNER */}
       <section id="impact" className="impact-section animate-section">
         <div className="section-container">
           <span className="section-tag light-tag">OUR IMPACT</span>
@@ -525,12 +509,10 @@ function App() {
         </div>
       </section>
 
-      {/* SECTION DIVIDER LINE */}
       <div className="section-divider">
         <div className="divider-line"></div>
       </div>
 
-      {/* OUR MARKETS SECTION */}
       <section id="markets" className="markets-section animate-section">
         <div className="section-container grid-2">
           <div className="markets-left">
@@ -589,12 +571,10 @@ function App() {
         </div>
       </section>
 
-      {/* SECTION DIVIDER LINE */}
       <div className="section-divider">
         <div className="divider-line"></div>
       </div>
 
-      {/* TESTIMONIAL CAROUSEL SECTION */}
       <section className="testimonial-section animate-section">
         <div className="testimonial-container grid-2">
           <div className="testimonial-content">
@@ -644,12 +624,10 @@ function App() {
         </div>
       </section>
 
-      {/* SECTION DIVIDER LINE */}
       <div className="section-divider">
         <div className="divider-line"></div>
       </div>
 
-      {/* CONTACT US SECTION */}
       <section id="contact" className="contact-section animate-section">
         <div className="section-container grid-2">
           <div className="contact-info">
@@ -745,7 +723,6 @@ function App() {
         </div>
       </section>
 
-      {/* FOOTER */}
       <footer className="footer">
         <div className="footer-container">
           <div className="footer-top grid-4">
