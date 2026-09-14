@@ -3,6 +3,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Studio } from 'sanity';
 import sanityConfig from '../sanity.config.js';
+import { client, urlFor } from './sanityClient.js';
 import {
   TrendingUp,
   Target,
@@ -57,10 +58,27 @@ function App() {
   const [isHovered, setIsHovered] = useState(false);
   const [activeTestimonial, setActiveTestimonial] = useState(0);
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [cmsData, setCmsData] = useState(null);
 
   if (typeof window !== 'undefined' && window.location.pathname.startsWith('/admin')) {
     return <Studio config={sanityConfig} />;
   }
+
+  useEffect(() => {
+    const fetchContent = () => {
+      client.fetch(`*[_type == "homepage"][0]`).then((data) => {
+        if (data) setCmsData(data);
+      }).catch(console.error);
+    };
+
+    fetchContent();
+
+    const subscription = client.listen(`*[_type == "homepage"]`).subscribe(() => {
+      fetchContent();
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -262,19 +280,18 @@ function App() {
         <div className="hero-grid">
           <div className="hero-content">
             <h1 className="hero-title">
-              MAKE INDIA
-              <br />
-              YOUR NEXT
-              <br />
-              <span className="italic-serif">MOVE</span> —
+              {cmsData?.heroGroup?.heroTitle || (
+                <>
+                  MAKE INDIA
+                  <br />
+                  YOUR NEXT
+                  <br />
+                  <span className="italic-serif">MOVE</span> —
+                </>
+              )}
             </h1>
             <p className="hero-desc">
-              JHP Enterprise was built upon the foundation of our former affiliate—
-              Korea Indo Traders Pvt. Ltd. established in 1968. Driven by our passion
-              for consulting and marketing and our deep understanding of both
-              Korean and Indian markets, we envisioned a company that would serve
-              as a catalyst for businesses seeking to expand their reach and make
-              a significant impact in the Indian market.
+              {cmsData?.heroGroup?.heroDesc || cmsData?.heroDesc || `JHP Enterprise was built upon the foundation of our former affiliate—Korea Indo Traders Pvt. Ltd. established in 1968. Driven by our passion for consulting and marketing and our deep understanding of both Korean and Indian markets, we envisioned a company that would serve as a catalyst for businesses seeking to expand their reach and make a significant impact in the Indian market.`}
             </p>
             <div className="hero-actions">
               <a
@@ -287,7 +304,7 @@ function App() {
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
               >
-                Discover our story <ArrowRight className="icon-arrow" size={18} />
+                {cmsData?.heroGroup?.heroCtaText || 'Discover our story'} <ArrowRight className="icon-arrow" size={18} />
               </a>
             </div>
           </div>
@@ -295,7 +312,7 @@ function App() {
           <div className="hero-media-wrapper">
             <div className="hero-image-clip">
               <img
-                src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80"
+                src={cmsData?.heroGroup?.heroImage ? urlFor(cmsData.heroGroup.heroImage).url() : (cmsData?.heroImage ? urlFor(cmsData.heroImage).url() : "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80")}
                 alt="Modern Architecture City Skyline"
                 className="hero-img"
               />
@@ -311,20 +328,20 @@ function App() {
       <section id="about" className="about-section animate-section">
         <div className="section-container grid-2">
           <div className="about-left">
-            <span className="section-tag">ABOUT JHP</span>
+            <span className="section-tag">{cmsData?.aboutGroup?.aboutTag || 'ABOUT JHP'}</span>
             <div className="reveal-mask">
               <h2 className="section-heading serif-heading reveal-text">
-                Rooted in Korea.
-                <br />
-                Focused on India.
+                {cmsData?.aboutGroup?.aboutHeading || cmsData?.aboutHeading || (
+                  <>
+                    Rooted in Korea.
+                    <br />
+                    Focused on India.
+                  </>
+                )}
               </h2>
             </div>
             <p className="section-body">
-              JHP Enterprise traces its roots to Korea Indo Traders Pvt. Ltd.,
-              established in 1968. With decades of experience and a deep
-              understanding of both Korean and Indian markets, we bring
-              insight, connections and expertise to help businesses grow across
-              borders.
+              {cmsData?.aboutGroup?.aboutBody || cmsData?.aboutBody || `JHP Enterprise traces its roots to Korea Indo Traders Pvt. Ltd., established in 1968. With decades of experience and a deep understanding of both Korean and Indian markets, we bring insight, connections and expertise to help businesses grow across borders.`}
             </p>
             <a
               href="#services"
@@ -336,14 +353,14 @@ function App() {
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
             >
-              Learn more <ArrowRight className="icon-arrow" size={18} />
+              {cmsData?.aboutGroup?.aboutCtaText || 'Learn more'} <ArrowRight className="icon-arrow" size={18} />
             </a>
           </div>
 
           <div className="about-right">
             <div className="image-card-container">
               <img
-                src="https://images.unsplash.com/photo-1577495508048-b635879837f1?auto=format&fit=crop&w=1000&q=80"
+                src={cmsData?.aboutGroup?.aboutImage ? urlFor(cmsData.aboutGroup.aboutImage).url() : (cmsData?.aboutImage ? urlFor(cmsData.aboutImage).url() : "https://images.unsplash.com/photo-1577495508048-b635879837f1?auto=format&fit=crop&w=1000&q=80")}
                 alt="Korea India Business Flags & Partnership"
                 className="about-img"
               />
@@ -356,7 +373,7 @@ function App() {
                   />
                   <text fontSize="9.5" fontWeight="500" letterSpacing="1.2" fill="#0B1A2C">
                     <textPath href="#circlePath">
-                      BRIDGING MARKETS • BUILDING OPPORTUNITIES •
+                      {cmsData?.aboutGroup?.badgeText || 'BRIDGING MARKETS • BUILDING OPPORTUNITIES •'}
                     </textPath>
                   </text>
                 </svg>
@@ -374,21 +391,24 @@ function App() {
         <div className="section-container">
           <div className="services-header grid-2">
             <div>
-              <span className="section-tag">WHAT WE DO</span>
+              <span className="section-tag">{cmsData?.servicesGroup?.servicesTag || 'WHAT WE DO'}</span>
               <div className="reveal-mask">
                 <h2 className="section-heading serif-heading reveal-text">
-                  Comprehensive
-                  <br />
-                  solutions for your
-                  <br />
-                  growth journey.
+                  {cmsData?.servicesGroup?.servicesHeading || (
+                    <>
+                      Comprehensive
+                      <br />
+                      solutions for your
+                      <br />
+                      growth journey.
+                    </>
+                  )}
                 </h2>
               </div>
             </div>
             <div className="services-header-right">
               <p className="section-body">
-                From market entry to long-term partnerships, we provide
-                end-to-end support to help your business succeed in India.
+                {cmsData?.servicesGroup?.servicesBody || 'From market entry to long-term partnerships, we provide end-to-end support to help your business succeed in India.'}
               </p>
               <a
                 href="#impact"
@@ -406,111 +426,59 @@ function App() {
           </div>
 
           <div className="services-grid">
-            <div className="service-card">
-              <div className="service-icon-box">
-                <TrendingUp size={40} />
-              </div>
-              <div>
-                <h3 className="service-title">Market Entry & Expansion</h3>
-                <p className="service-desc">
-                  Navigate the Indian market with confidence and clarity.
-                </p>
-              </div>
-              <ArrowRight className="service-card-arrow" size={20} />
-            </div>
-
-            <div className="service-card">
-              <div className="service-icon-box">
-                <Target size={40} />
-              </div>
-              <div>
-                <h3 className="service-title">Strategy & Consulting</h3>
-                <p className="service-desc">
-                  Turn insights into actionable business strategies.
-                </p>
-              </div>
-              <ArrowRight className="service-card-arrow" size={20} />
-            </div>
-
-            <div className="service-card">
-              <div className="service-icon-box">
-                <Megaphone size={40} />
-              </div>
-              <div>
-                <h3 className="service-title">Marketing & Brand</h3>
-                <p className="service-desc">
-                  Build a brand that resonates across cultures.
-                </p>
-              </div>
-              <ArrowRight className="service-card-arrow" size={20} />
-            </div>
-
-            <div className="service-card">
-              <div className="service-icon-box">
-                <Handshake size={40} />
-              </div>
-              <div>
-                <h3 className="service-title">Business Development</h3>
-                <p className="service-desc">
-                  Create opportunities. Build lasting relationships.
-                </p>
-              </div>
-              <ArrowRight className="service-card-arrow" size={20} />
-            </div>
-
-            <div className="service-card">
-              <div className="service-icon-box">
-                <Link2 size={40} />
-              </div>
-              <div>
-                <h3 className="service-title">Korea-India Partnership</h3>
-                <p className="service-desc">
-                  Connect businesses. Create mutual value.
-                </p>
-              </div>
-              <ArrowRight className="service-card-arrow" size={20} />
-            </div>
-
-            <div className="service-card">
-              <div className="service-icon-box">
-                <Package size={40} />
-              </div>
-              <div>
-                <h3 className="service-title">Trade & Distribution</h3>
-                <p className="service-desc">
-                  Move your products further, faster, smarter.
-                </p>
-              </div>
-              <ArrowRight className="service-card-arrow" size={20} />
-            </div>
+            {(cmsData?.servicesGroup?.servicesList && cmsData.servicesGroup.servicesList.length > 0
+              ? cmsData.servicesGroup.servicesList
+              : [
+                  { title: 'Market Entry & Expansion', desc: 'Navigate the Indian market with confidence and clarity.' },
+                  { title: 'Strategy & Consulting', desc: 'Turn insights into actionable business strategies.' },
+                  { title: 'Marketing & Brand', desc: 'Build a brand that resonates across cultures.' },
+                  { title: 'Business Development', desc: 'Create opportunities. Build lasting relationships.' },
+                  { title: 'Korea-India Partnership', desc: 'Connect businesses. Create mutual value.' },
+                  { title: 'Trade & Distribution', desc: 'Move your products further, faster, smarter.' }
+                ]
+            ).map((service, index) => {
+              const ServiceIcons = [TrendingUp, Target, Megaphone, Handshake, Link2, Package];
+              const IconComp = ServiceIcons[index % ServiceIcons.length];
+              return (
+                <div className="service-card" key={index}>
+                  <div className="service-icon-box">
+                    <IconComp size={40} />
+                  </div>
+                  <div>
+                    <h3 className="service-title">{service.title}</h3>
+                    <p className="service-desc">{service.desc}</p>
+                  </div>
+                  <ArrowRight className="service-card-arrow" size={20} />
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
 
       <section id="impact" className="impact-section animate-section">
         <div className="section-container">
-          <span className="section-tag light-tag">OUR IMPACT</span>
+          <span className="section-tag light-tag">{cmsData?.impactGroup?.impactTag || 'OUR IMPACT'}</span>
           <div className="reveal-mask">
             <h2 className="impact-title serif-heading reveal-text">
-              A bridge between Korea and India.
+              {cmsData?.impactGroup?.impactHeading || 'A bridge between Korea and India.'}
             </h2>
           </div>
 
           <div className="impact-stats-grid">
-            <div className="stat-item">
-              <div className="stat-number">1968</div>
-              <p className="stat-label">Our foundation and legacy</p>
-            </div>
-
-            <div className="stat-item">
-              <div className="stat-number">Korea + India</div>
-              <p className="stat-label">Two markets. One network.</p>
-            </div>
-
-            <div className="stat-item">
-              <div className="stat-number">Long-term partnerships</div>
-              <p className="stat-label">Trusted by businesses across industries.</p>
-            </div>
+            {(cmsData?.impactGroup?.statsList && cmsData.impactGroup.statsList.length > 0
+              ? cmsData.impactGroup.statsList
+              : [
+                  { number: '1968', label: 'Our foundation and legacy' },
+                  { number: 'Korea + India', label: 'Two markets. One network.' },
+                  { number: 'Long-term partnerships', label: 'Trusted by businesses across industries.' }
+                ]
+            ).map((stat, index) => (
+              <div className="stat-item" key={index}>
+                <div className="stat-number">{stat.number}</div>
+                <p className="stat-label">{stat.label}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -524,7 +492,7 @@ function App() {
           <div className="markets-left">
             <div className="dual-image-frame">
               <img
-                src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1000&q=80"
+                src={cmsData?.marketsGroup?.marketsImage ? urlFor(cmsData.marketsGroup.marketsImage).url() : "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1000&q=80"}
                 alt="India & Korea Markets"
                 className="markets-img"
               />
@@ -532,17 +500,20 @@ function App() {
           </div>
 
           <div className="markets-right">
-            <span className="section-tag">OUR MARKETS</span>
+            <span className="section-tag">{cmsData?.marketsGroup?.marketsTag || 'OUR MARKETS'}</span>
             <div className="reveal-mask">
               <h2 className="section-heading serif-heading reveal-text">
-                Two markets.
-                <br />
-                One opportunity.
+                {cmsData?.marketsGroup?.marketsHeading || (
+                  <>
+                    Two markets.
+                    <br />
+                    One opportunity.
+                  </>
+                )}
               </h2>
             </div>
             <p className="section-body">
-              We bridge Korea and India — connecting businesses, ideas and people
-              for sustainable growth and shared success.
+              {cmsData?.marketsGroup?.marketsBody || 'We bridge Korea and India — connecting businesses, ideas and people for sustainable growth and shared success.'}
             </p>
             <a
               href="#contact"
@@ -558,20 +529,19 @@ function App() {
             </a>
 
             <div className="markets-list">
-              <div className="market-row">
-                <h4 className="market-name">Korea</h4>
-                <p className="market-details">Innovation. Technology. Global reach.</p>
-              </div>
-
-              <div className="market-row">
-                <h4 className="market-name">India</h4>
-                <p className="market-details">Talent. Scale. New possibilities.</p>
-              </div>
-
-              <div className="market-row">
-                <h4 className="market-name">Beyond Borders</h4>
-                <p className="market-details">Stronger together.</p>
-              </div>
+              {(cmsData?.marketsGroup?.marketsList && cmsData.marketsGroup.marketsList.length > 0
+                ? cmsData.marketsGroup.marketsList
+                : [
+                    { name: 'Korea', details: 'Innovation. Technology. Global reach.' },
+                    { name: 'India', details: 'Talent. Scale. New possibilities.' },
+                    { name: 'Beyond Borders', details: 'Stronger together.' }
+                  ]
+              ).map((m, index) => (
+                <div className="market-row" key={index}>
+                  <h4 className="market-name">{m.name}</h4>
+                  <p className="market-details">{m.details}</p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -583,50 +553,63 @@ function App() {
 
       <section className="testimonial-section animate-section">
         <div className="testimonial-container grid-2">
-          <div className="testimonial-content">
-            <div className="quote-mark">“</div>
-            <p className="testimonial-quote serif-heading">
-              {testimonials[activeTestimonial].quote}
-            </p>
-            <div className="testimonial-author-block">
-              <p className="author-name">— {testimonials[activeTestimonial].author}</p>
-              <p className="author-role">{testimonials[activeTestimonial].role}</p>
-            </div>
-          </div>
+          {(() => {
+            const list = cmsData?.testimonialsGroup?.testimonialsList && cmsData.testimonialsGroup.testimonialsList.length > 0
+              ? cmsData.testimonialsGroup.testimonialsList
+              : testimonials;
+            const current = list[activeTestimonial % list.length] || testimonials[0];
+            const authorImg = current.image?.asset ? urlFor(current.image).url() : current.image;
+            return (
+              <>
+                <div className="testimonial-content">
+                  <div className="quote-mark">“</div>
+                  <p className="testimonial-quote serif-heading">
+                    {current.quote}
+                  </p>
+                  <div className="testimonial-author-block">
+                    <p className="author-name">— {current.author}</p>
+                    <p className="author-role">{current.role}</p>
+                  </div>
+                </div>
 
-          <div className="testimonial-side">
-            <div className="portrait-wrapper">
-              <img
-                src={testimonials[activeTestimonial].image}
-                alt={testimonials[activeTestimonial].author}
-                className="portrait-img"
-              />
-            </div>
+                <div className="testimonial-side">
+                  <div className="portrait-wrapper">
+                    {authorImg && (
+                      <img
+                        src={authorImg}
+                        alt={current.author}
+                        className="portrait-img"
+                      />
+                    )}
+                  </div>
 
-            <div className="carousel-controls">
-              <button
-                onClick={handlePrevTestimonial}
-                className="carousel-btn"
-                aria-label="Previous Testimonial"
-                onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => setIsHovered(false)}
-              >
-                <ChevronLeft size={20} />
-              </button>
-              <button
-                onClick={handleNextTestimonial}
-                className="carousel-btn"
-                aria-label="Next Testimonial"
-                onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => setIsHovered(false)}
-              >
-                <ChevronRight size={20} />
-              </button>
-              <span className="carousel-counter">
-                {testimonials[activeTestimonial].id} / 0{testimonials.length}
-              </span>
-            </div>
-          </div>
+                  <div className="carousel-controls">
+                    <button
+                      onClick={() => setActiveTestimonial((prev) => (prev - 1 + list.length) % list.length)}
+                      className="carousel-btn"
+                      aria-label="Previous Testimonial"
+                      onMouseEnter={() => setIsHovered(true)}
+                      onMouseLeave={() => setIsHovered(false)}
+                    >
+                      <ChevronLeft size={20} />
+                    </button>
+                    <button
+                      onClick={() => setActiveTestimonial((prev) => (prev + 1) % list.length)}
+                      className="carousel-btn"
+                      aria-label="Next Testimonial"
+                      onMouseEnter={() => setIsHovered(true)}
+                      onMouseLeave={() => setIsHovered(false)}
+                    >
+                      <ChevronRight size={20} />
+                    </button>
+                    <span className="carousel-counter">
+                      0{(activeTestimonial % list.length) + 1} / 0{list.length}
+                    </span>
+                  </div>
+                </div>
+              </>
+            );
+          })()}
         </div>
       </section>
 
@@ -654,7 +637,7 @@ function App() {
                 <Mail className="contact-icon" size={20} />
                 <div>
                   <span className="contact-label">Email Us</span>
-                  <p className="contact-val">hello@jhpartners.co.in</p>
+                  <p className="contact-val">{cmsData?.contactGroup?.email || 'hello@jhpartners.co.in'}</p>
                 </div>
               </div>
 
@@ -662,7 +645,7 @@ function App() {
                 <Phone className="contact-icon" size={20} />
                 <div>
                   <span className="contact-label">Call Us</span>
-                  <p className="contact-val">+91 123 456 7890</p>
+                  <p className="contact-val">{cmsData?.contactGroup?.phone || '+91 123 456 7890'}</p>
                 </div>
               </div>
 
@@ -670,7 +653,7 @@ function App() {
                 <Globe className="contact-icon" size={20} />
                 <div>
                   <span className="contact-label">Global Presence</span>
-                  <p className="contact-val">Seoul, South Korea & New Delhi, India</p>
+                  <p className="contact-val">{cmsData?.contactGroup?.address || 'Seoul, South Korea & New Delhi, India'}</p>
                 </div>
               </div>
             </div>
