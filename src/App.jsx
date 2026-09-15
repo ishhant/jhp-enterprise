@@ -26,6 +26,7 @@ import {
 } from 'lucide-react';
 import './index.css';
 import logoImg from './assets/logo.png';
+import logo2Img from './assets/logo2.png';
 import TempTransitionsDemo from './TempTransitionsDemo';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -36,15 +37,14 @@ const translations = {
     hero: {
       title: (
         <>
-          <span className="hero-line-white">make india</span>
+          Make India
           <br />
-          <span className="hero-line-gold">
-            your next move
-          </span>
+          your <span className="hero-next-italic">next</span> move
         </>
       ),
-      desc: `JHP Enterprise was built upon the foundation of our former affiliate—Korea Indo Traders Pvt. Ltd. established in 1968. Driven by our passion for consulting and marketing and our deep understanding of both Korean and Indian markets, we envisioned a company that would serve as a catalyst for businesses seeking to expand their reach and make a significant impact in the Indian market.`,
-      cta: 'Discover our story',
+      desc: `A Gurgaon-based studio helping Korean brands build the strategy, identity, and market presence to land in India — and stay.`,
+      cta: 'Explore our work',
+      secondaryCta: 'Start a project',
     },
     about: {
       tag: 'ABOUT JHP',
@@ -248,15 +248,14 @@ const translations = {
     hero: {
       title: (
         <>
-          <span className="hero-line-white">인도 시장</span>
+          인도 시장
           <br />
-          <span className="hero-line-gold">
-            당신의 다음 도약
-          </span>
+          당신의 <span className="hero-next-italic">다음</span> 도약
         </>
       ),
-      desc: `JHP Enterprise는 1968년에 설립된 Korea Indo Traders Pvt. Ltd.의 유산을 바탕으로 설립되었습니다. 한국과 인도 시장에 대한 깊은 이해와 컨설팅 및 마케팅 열정을 바탕으로 인도 시장 확장을 희망하는 기업의 핵심 촉매제가 되고자 합니다.`,
-      cta: '스토리 알아보기',
+      desc: `한국 브랜드가 인도의 전략, 정체성 및 시장 입지를 구축할 수 있도록 지원하는 구르가온 기반 스튜디오입니다.`,
+      cta: '작품 둘러보기',
+      secondaryCta: '프로젝트 시작하기',
     },
     about: {
       tag: 'ABOUT JHP',
@@ -524,19 +523,17 @@ const renderFormattedHeroTitle = (titleInput) => {
   }
   if (typeof titleInput === 'string') {
     const trimmed = titleInput.trim();
-    if (trimmed.toUpperCase().includes('MAKE INDIA')) {
+    if (trimmed.toLowerCase().includes('make india')) {
       return (
         <>
-          <span className="hero-line-white">make india</span>
+          Make India
           <br />
-          <span className="hero-line-gold">
-            your next move
-          </span>
+          your <span className="hero-next-italic">next</span> move
         </>
       );
     }
     return (
-      <span className="hero-line-gold">{trimmed}</span>
+      <span>{trimmed}</span>
     );
   }
   return titleInput;
@@ -548,8 +545,8 @@ function App() {
 
   const cursorRef = useRef(null);
   const [isHovered, setIsHovered] = useState(false);
-  const [activeTestimonial, setActiveTestimonial] = useState(0);
   const [activePortfolioTab, setActivePortfolioTab] = useState('2026');
+  const [isArchiveOpen, setIsArchiveOpen] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [cmsData, setCmsData] = useState(null);
   const [lang, setLang] = useState('en');
@@ -562,7 +559,6 @@ function App() {
     { id: 'impact', label: 'Our Impact' },
     { id: 'markets', label: 'Our Markets' },
     { id: 'portfolio', label: 'Our Portfolio' },
-    { id: 'testimonials', label: 'Testimonials' },
     { id: 'contact', label: 'Contact Us' }
   ];
 
@@ -716,18 +712,6 @@ function App() {
     return <TempTransitionsDemo />;
   }
 
-  const handleNextTestimonial = () => {
-    const list = lang === 'ko' ? t.testimonials : (cmsData?.testimonialsGroup?.testimonialsList && cmsData.testimonialsGroup.testimonialsList.length > 0 ? cmsData.testimonialsGroup.testimonialsList : t.testimonials);
-    setActiveTestimonial((prev) => (prev + 1) % list.length);
-  };
-
-  const handlePrevTestimonial = () => {
-    const list = lang === 'ko' ? t.testimonials : (cmsData?.testimonialsGroup?.testimonialsList && cmsData.testimonialsGroup.testimonialsList.length > 0 ? cmsData.testimonialsGroup.testimonialsList : t.testimonials);
-    setActiveTestimonial(
-      (prev) => (prev - 1 + list.length) % list.length
-    );
-  };
-
   const scrollToSection = (id) => {
     const el = document.getElementById(id);
     if (el) {
@@ -809,7 +793,7 @@ function App() {
             </a>
             <a
               href="#contact"
-              onClick={(e) => { e.preventDefault(); goToSectionIndex(7); }}
+              onClick={(e) => { e.preventDefault(); goToSectionIndex(6); }}
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
             >
@@ -841,10 +825,9 @@ function App() {
 
       {/* Main Snap Stage Container */}
       <div className="main-snap-stage effect-slide">
-        <section id="home" className={`hero-section hero-no-image snap-main-section ${currentSectionIndex === 0 ? 'is-active' : currentSectionIndex > 0 ? 'is-past' : 'is-future'}`}>
+        <section id="home" className={`hero-section snap-main-section ${currentSectionIndex === 0 ? 'is-active' : currentSectionIndex > 0 ? 'is-past' : 'is-future'}`}>
           <div className="hero-container">
-            <div className="hero-content centered-hero">
-              <span className="hero-badge-tag">JHP ENTERPRISE • KOREA & INDIA</span>
+            <div className="hero-content hero-content-left">
               <h1 className="hero-title">
                 {renderFormattedHeroTitle(lang === 'ko' ? t.hero.title : (cmsData?.heroGroup?.heroTitle || t.hero.title))}
               </h1>
@@ -853,19 +836,34 @@ function App() {
               </p>
               <div className="hero-actions">
                 <a
-                  href="#about"
+                  href="#portfolio"
                   onClick={(e) => {
                     e.preventDefault();
-                    goToSectionIndex(1);
+                    goToSectionIndex(5);
                   }}
-                  className="cta-link hero-cta-btn"
+                  className="hero-cta-link-primary"
                   onMouseEnter={() => setIsHovered(true)}
                   onMouseLeave={() => setIsHovered(false)}
                 >
                   {lang === 'ko' ? t.hero.cta : (cmsData?.heroGroup?.heroCtaText || t.hero.cta)} <ArrowRight className="icon-arrow" size={18} />
                 </a>
+                <a
+                  href="#contact"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    goToSectionIndex(6);
+                  }}
+                  className="hero-cta-link-secondary"
+                  onMouseEnter={() => setIsHovered(true)}
+                  onMouseLeave={() => setIsHovered(false)}
+                >
+                  {lang === 'ko' ? t.hero.secondaryCta : 'Start a project'}
+                </a>
               </div>
             </div>
+          </div>
+          <div className="hero-watermark-wrapper">
+            <img src={logo2Img} alt="" className="hero-watermark-logo" />
           </div>
           {renderDownArrow(1)}
         </section>
@@ -931,32 +929,28 @@ function App() {
 
         <section id="services" className={`services-section animate-section snap-main-section ${currentSectionIndex === 2 ? 'is-active' : currentSectionIndex > 2 ? 'is-past' : 'is-future'}`}>
           <div className="section-container">
-            <div className="services-header grid-2">
-              <div>
-                <span className="section-tag">{lang === 'ko' ? t.services.tag : (cmsData?.servicesGroup?.servicesTag || t.services.tag)}</span>
-                <div className="reveal-mask">
-                  <h2 className="section-heading serif-heading reveal-text">
-                    {lang === 'ko' ? t.services.heading : (cmsData?.servicesGroup?.servicesHeading || t.services.heading)}
-                  </h2>
-                </div>
+            <div className="services-header">
+              <span className="section-tag">{lang === 'ko' ? t.services.tag : (cmsData?.servicesGroup?.servicesTag || t.services.tag)}</span>
+              <div className="reveal-mask">
+                <h2 className="section-heading serif-heading reveal-text">
+                  {lang === 'ko' ? t.services.heading : (cmsData?.servicesGroup?.servicesHeading || t.services.heading)}
+                </h2>
               </div>
-              <div className="services-header-right">
-                <p className="section-body">
-                  {lang === 'ko' ? t.services.body : (cmsData?.servicesGroup?.servicesBody || t.services.body)}
-                </p>
-                <a
-                  href="#impact"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    goToSectionIndex(3);
-                  }}
-                  className="cta-link dark-link"
-                  onMouseEnter={() => setIsHovered(true)}
-                  onMouseLeave={() => setIsHovered(false)}
-                >
-                  {t.services.cta} <ArrowRight className="icon-arrow" size={18} />
-                </a>
-              </div>
+              <p className="section-body">
+                {lang === 'ko' ? t.services.body : (cmsData?.servicesGroup?.servicesBody || t.services.body)}
+              </p>
+              <a
+                href="#impact"
+                onClick={(e) => {
+                  e.preventDefault();
+                  goToSectionIndex(3);
+                }}
+                className="cta-link dark-link"
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+              >
+                {t.services.cta} <ArrowRight className="icon-arrow" size={18} />
+              </a>
             </div>
 
             <div className="services-grid">
@@ -1088,124 +1082,71 @@ function App() {
                   </h2>
                 </div>
               </div>
+
+              <button
+                className={`archive-toggle-btn ${isArchiveOpen ? 'is-open' : ''}`}
+                onClick={() => setIsArchiveOpen(!isArchiveOpen)}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+              >
+                <span>
+                  {isArchiveOpen
+                    ? (lang === 'ko' ? '접기' : 'Hide project list')
+                    : (lang === 'ko' ? '전체 프로젝트 리스트 보기 (35+)' : 'View full project list (35+)')}
+                </span>
+                <ChevronDown className="archive-toggle-icon" size={18} />
+              </button>
             </div>
 
-            {/* Archive Columns grouped by Year */}
-            <div className="archive-year-columns-grid">
-              {t.projects.years.map((yearObj) => {
-                  const allItems = yearObj.columns.flat();
-                  return (
-                    <div key={yearObj.year} className="archive-year-column">
-                      <div className="archive-year-heading">
-                        <span className="archive-year-bullet">•</span> {yearObj.year}
-                      </div>
-                      <ul className="archive-item-list">
-                        {allItems.map((item, k) => (
-                          <li
-                            key={k}
-                            className="archive-item-row"
-                            onMouseEnter={() => setIsHovered(true)}
-                            onMouseLeave={() => setIsHovered(false)}
-                          >
-                            <span className="archive-item-name">{item.name}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  );
-                })}
-            </div>
-          </div>
-        </section>
-
-        <section id="testimonials" className={`testimonial-section animate-section snap-main-section ${currentSectionIndex === 6 ? 'is-active' : currentSectionIndex > 6 ? 'is-past' : 'is-future'}`}>
-          <div className="section-container">
-            {(() => {
-              const list = lang === 'ko'
-                ? t.testimonials
-                : (cmsData?.testimonialsGroup?.testimonialsList && cmsData.testimonialsGroup.testimonialsList.length > 0
-                  ? cmsData.testimonialsGroup.testimonialsList
-                  : t.testimonials);
-              const listLength = list.length;
-              
-              const getInitials = (name) => {
-                if (!name) return 'JH';
-                const parts = name.trim().split(' ');
-                if (parts.length >= 2) return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
-                return name.substring(0, 2).toUpperCase();
-              };
-
-              const sectors = [
-                lang === 'ko' ? '에너지 및 인프라' : 'Energy & Infrastructure',
-                lang === 'ko' ? '테크 및 글로벌 확장' : 'Technology & Expansion',
-                lang === 'ko' ? '벤처 캐피탈 및 무역' : 'Venture Capital & Trade'
-              ];
-
-              return (
-                <>
-                  <div className="testimonial-header-row">
-                    <div>
-                      <span className="section-tag">{lang === 'ko' ? '고객 후기' : 'TESTIMONIALS'}</span>
-                      <h2 className="section-heading serif-heading">
-                        {lang === 'ko' ? '파트너사들의 신뢰' : 'Trusted by Industry Leaders'}
-                      </h2>
-                    </div>
-                    <p className="testimonial-subtitle">
+            {/* Archive Teaser when collapsed vs Full Archive when open */}
+            {!isArchiveOpen ? (
+              <div className="archive-teaser-wrapper">
+                <div className="archive-teaser-banner">
+                  <div className="archive-teaser-info">
+                    <p className="archive-teaser-text">
                       {lang === 'ko' 
-                        ? '한국과 인도 시장을 연결하며 이뤄낸 성과와 신뢰의 기록입니다.' 
-                        : 'Real feedback from global executives who scaled across Korea and India with JHP Enterprise.'}
+                        ? '2023년부터 2026년까지 한국과 인도를 잇는 35개 이상의 주요 비즈니스 브리핑, 행사 및 마케팅 프로젝트 아카이브입니다.' 
+                        : 'Explore over 35+ strategic cross-border engagements, marketing campaigns, and government brief events spanning 2023 to 2026.'}
                     </p>
                   </div>
-
-                  <div className="testimonial-cards-grid">
-                    {list.map((item, idx) => {
-                      const isSelected = (activeTestimonial % listLength) === idx;
-                      const parts = item.role.includes(',') ? item.role.split(',') : [item.role, ''];
-                      const roleTitle = parts[0].trim();
-                      const companyName = parts[1] ? parts[1].trim() : '';
-
-                      return (
-                        <div
-                          key={idx}
-                          className={`testimonial-grid-card ${isSelected ? 'active-grid-card' : ''}`}
-                          onClick={() => setActiveTestimonial(idx)}
-                          onMouseEnter={() => setIsHovered(true)}
-                          onMouseLeave={() => setIsHovered(false)}
-                        >
-                          <div className="card-top">
-                            <span className="sector-tag">{sectors[idx % sectors.length]}</span>
-                            <div className="star-rating">★★★★★</div>
-                          </div>
-
-                          <div className="card-quote-wrapper">
-                            <span className="inline-quote-mark">“</span>
-                            <p className="card-quote-text serif-heading">
-                              {item.quote.replace(/^[“"]|[”"]$/g, '')}
-                            </p>
-                          </div>
-
-                          <div className="card-footer">
-                            <div className="author-avatar-badge">
-                              {getInitials(item.author)}
-                            </div>
-                            <div className="author-details">
-                              <h4 className="author-name">{item.author}</h4>
-                              {companyName && <p className="author-company">{companyName}</p>}
-                              <p className="author-role-sub">{roleTitle}</p>
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    })}
+                  <div className="archive-featured-chips">
+                    <div className="featured-chip"><span>2026</span> KOCCA India K-Content Bizcon</div>
+                    <div className="featured-chip"><span>2025</span> Hyundai Motor Director Visit</div>
+                    <div className="featured-chip"><span>2024</span> KOINDEX & K-Content Expo</div>
+                    <div className="featured-chip"><span>2023</span> G-20 Leaders' Summit</div>
                   </div>
-                </>
-              );
-            })()}
+                </div>
+              </div>
+            ) : (
+              <div className="archive-year-columns-grid animate-fade-in">
+                {t.projects.years.map((yearObj) => {
+                    const allItems = yearObj.columns.flat();
+                    return (
+                      <div key={yearObj.year} className="archive-year-column">
+                        <div className="archive-year-heading">
+                          {yearObj.year}
+                        </div>
+                        <ul className="archive-item-list">
+                          {allItems.map((item, k) => (
+                            <li
+                              key={k}
+                              className="archive-item-row"
+                              onMouseEnter={() => setIsHovered(true)}
+                              onMouseLeave={() => setIsHovered(false)}
+                            >
+                              <span className="archive-item-name">{item.name}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    );
+                  })}
+              </div>
+            )}
           </div>
-          {renderDownArrow(7)}
         </section>
 
-        <section id="contact" className={`contact-section animate-section snap-main-section ${currentSectionIndex === 7 ? 'is-active' : currentSectionIndex > 7 ? 'is-past' : 'is-future'}`}>
+        <section id="contact" className={`contact-section animate-section snap-main-section ${currentSectionIndex === 6 ? 'is-active' : currentSectionIndex > 6 ? 'is-past' : 'is-future'}`}>
         <div className="section-container grid-2">
           <div className="contact-info">
             <span className="section-tag">{t.contact.tag}</span>
@@ -1297,12 +1238,12 @@ function App() {
           </div>
         </div>
 
-        {/* Footer inside Contact Section */}
+        {/* Redesigned Luxury Footer */}
         <footer className="footer">
           <div className="footer-container">
-            <div className="footer-top grid-4">
+            <div className="footer-top">
               <div className="footer-brand">
-                <a href="#" className="brand-logo footer-logo">
+                <a href="#home" onClick={(e) => { e.preventDefault(); goToSectionIndex(0); }} className="brand-logo footer-logo">
                   <img src={logoImg} alt="JHP Enterprise Logo" className="header-logo-img" />
                 </a>
                 <p className="footer-tagline">
@@ -1310,12 +1251,12 @@ function App() {
                 </p>
                 <div className="social-links">
                   <a href="#" aria-label="LinkedIn" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
-                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                    <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
                     </svg>
                   </a>
                   <a href="#" aria-label="YouTube" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
-                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                    <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M10 15l5.19-3L10 9v6m11.56-7.83c.13.47.22 1.1.28 1.9.07.8.1 1.49.1 2.09L22 12c0 2.19-.16 3.8-.44 4.83-.25.9-.83 1.48-1.73 1.73-.47.13-1.33.22-2.65.28-1.3.07-2.49.1-3.59.1L12 19c-4.19 0-6.8-.16-7.83-.44-.9-.25-1.48-.83-1.73-1.73-.13-.47-.22-1.1-.28-1.9-.07-.8-.1-1.49-.1-2.09L2 12c0-2.19.16-3.8.44-4.83.25-.9.83-1.48 1.73-1.73.47-.13 1.33-.22 2.65-.28 1.3-.07 2.49-.1 3.59-.1L12 5c4.19 0 6.8.16 7.83.44.9.25 1.48.83 1.73 1.73z"/>
                     </svg>
                   </a>
@@ -1325,31 +1266,40 @@ function App() {
               <div className="footer-col">
                 <h4 className="footer-col-title">{t.footer.navTitle}</h4>
                 <ul>
-                  <li><a href="#home">{t.nav.home}</a></li>
-                  <li><a href="#about">About JHP</a></li>
-                  <li><a href="#services">Services</a></li>
-                  <li><a href="#contact">{t.nav.contact}</a></li>
+                  <li><a href="#home" onClick={(e) => { e.preventDefault(); goToSectionIndex(0); }}>{t.nav.home}</a></li>
+                  <li><a href="#about" onClick={(e) => { e.preventDefault(); goToSectionIndex(1); }}>About JHP</a></li>
+                  <li><a href="#services" onClick={(e) => { e.preventDefault(); goToSectionIndex(2); }}>Services</a></li>
+                  <li><a href="#portfolio" onClick={(e) => { e.preventDefault(); goToSectionIndex(5); }}>Portfolio</a></li>
                 </ul>
               </div>
 
               <div className="footer-col">
                 <h4 className="footer-col-title">{t.footer.marketsTitle}</h4>
                 <ul>
-                  <li><a href="#markets">Korea Market</a></li>
-                  <li><a href="#markets">India Expansion</a></li>
-                  <li><a href="#impact">Our Impact</a></li>
+                  <li><a href="#markets" onClick={(e) => { e.preventDefault(); goToSectionIndex(4); }}>Korea Market</a></li>
+                  <li><a href="#markets" onClick={(e) => { e.preventDefault(); goToSectionIndex(4); }}>India Expansion</a></li>
+                  <li><a href="#impact" onClick={(e) => { e.preventDefault(); goToSectionIndex(3); }}>Our Impact</a></li>
                 </ul>
               </div>
 
               <div className="footer-col">
                 <h4 className="footer-col-title">{t.footer.contactTitle}</h4>
-                <p className="footer-info">hello@jhpartners.co.in</p>
-                <p className="footer-info">+91 123 456 7890</p>
+                <div className="footer-info-item">
+                  <span className="footer-info-label">Email</span>
+                  <p className="footer-info-val">hello@jhpartners.co.in</p>
+                </div>
+                <div className="footer-info-item">
+                  <span className="footer-info-label">Presence</span>
+                  <p className="footer-info-val">Seoul & New Delhi</p>
+                </div>
               </div>
             </div>
 
             <div className="footer-bottom">
               <p>{t.footer.rights}</p>
+              <div className="footer-location-badge">
+                <span>🌐</span> Seoul • New Delhi
+              </div>
               <div className="legal-links">
                 <a href="#">{t.footer.privacy}</a>
                 <span>|</span>
