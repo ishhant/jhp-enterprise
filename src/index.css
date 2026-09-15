@@ -166,8 +166,16 @@ body {
   transition: transform 0.3s ease;
 }
 
+body:has(.site-wrapper) {
+  overflow: hidden;
+  height: 100vh;
+}
+
 .site-wrapper {
   position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
 }
 
 .section-container {
@@ -1421,6 +1429,22 @@ body {
 .main-snap-stage .section-container {
   padding-top: 1rem !important;
   padding-bottom: 3rem !important;
+}
+
+/* Make contact section contain form + edge-to-edge full width footer at bottom */
+.main-snap-stage #contact {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  padding-bottom: 0 !important;
+  justify-content: space-between !important;
+}
+
+.main-snap-stage .footer {
+  width: 100% !important;
+  margin-top: 3rem !important;
+  box-sizing: border-box;
+  background-color: var(--bg-darker) !important;
+  padding: 4rem 0 2rem !important;
 }
 
 /* Vertical Slide Effect */

@@ -657,20 +657,34 @@ function App() {
     };
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
 
-    const heroTl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-    heroTl
-      .fromTo('.navbar', { y: -30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8 })
-      .fromTo('.hero-badge-tag', { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6 }, '-=0.4')
-      .fromTo('.hero-title', { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 1 }, '-=0.4')
-      .fromTo('.hero-desc', { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8 }, '-=0.6')
-      .fromTo('.hero-actions', { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6 }, '-=0.4');
+    // Trigger section-specific entrance animations when slide changes
+    const activeSec = document.querySelectorAll('.snap-main-section')[currentSectionIndex];
+    if (activeSec) {
+      const headings = activeSec.querySelectorAll('.section-tag, .section-heading, .section-body');
+      if (headings.length > 0) {
+        gsap.fromTo(headings, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.7, stagger: 0.12, ease: 'power3.out' });
+      }
 
-    // Reset element visibility for 1-scroll section stage
-    gsap.to('.reveal-text', { y: '0%', duration: 0.8, ease: 'power3.out' });
-    gsap.to('.animate-section', { opacity: 1, y: 0, duration: 0.4 });
-    gsap.to('.service-card', { opacity: 1, y: 0, duration: 0.4 });
-    gsap.to('.stat-item', { opacity: 1, y: 0, scale: 1, duration: 0.4 });
-    gsap.to('.market-row', { opacity: 1, x: 0, duration: 0.4 });
+      const cards = activeSec.querySelectorAll('.service-card, .portfolio-card, .market-card, .contact-method-item');
+      if (cards.length > 0) {
+        gsap.fromTo(cards, { opacity: 0, y: 40, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.6, stagger: 0.1, delay: 0.15, ease: 'power3.out' });
+      }
+
+      const stats = activeSec.querySelectorAll('.stat-item');
+      if (stats.length > 0) {
+        gsap.fromTo(stats, { opacity: 0, scale: 0.8, y: 20 }, { opacity: 1, scale: 1, y: 0, duration: 0.6, stagger: 0.1, delay: 0.2, ease: 'back.out(1.7)' });
+      }
+
+      const rows = activeSec.querySelectorAll('.market-row');
+      if (rows.length > 0) {
+        gsap.fromTo(rows, { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.6, stagger: 0.12, delay: 0.15, ease: 'power2.out' });
+      }
+
+      const sideCols = activeSec.querySelectorAll('.about-right, .contact-form-wrapper');
+      if (sideCols.length > 0) {
+        gsap.fromTo(sideCols, { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.8, delay: 0.2, ease: 'power3.out' });
+      }
+    }
 
     const sectionTags = document.querySelectorAll('.section-tag');
     sectionTags.forEach((tag) => tag.classList.add('active-tag'));
@@ -1321,69 +1335,70 @@ function App() {
             )}
           </div>
         </div>
-      </section>
-      </div>
 
-      <footer className="footer">
-        <div className="footer-container">
-          <div className="footer-top grid-4">
-            <div className="footer-brand">
-              <a href="#" className="brand-logo footer-logo">
-                <img src={logoImg} alt="JHP Enterprise Logo" className="header-logo-img" />
-              </a>
-              <p className="footer-tagline">
-                {t.footer.tagline}
-              </p>
-              <div className="social-links">
-                <a href="#" aria-label="LinkedIn" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
-                  <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
-                  </svg>
+        {/* Footer inside Contact Section */}
+        <footer className="footer">
+          <div className="footer-container">
+            <div className="footer-top grid-4">
+              <div className="footer-brand">
+                <a href="#" className="brand-logo footer-logo">
+                  <img src={logoImg} alt="JHP Enterprise Logo" className="header-logo-img" />
                 </a>
-                <a href="#" aria-label="YouTube" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
-                  <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M10 15l5.19-3L10 9v6m11.56-7.83c.13.47.22 1.1.28 1.9.07.8.1 1.49.1 2.09L22 12c0 2.19-.16 3.8-.44 4.83-.25.9-.83 1.48-1.73 1.73-.47.13-1.33.22-2.65.28-1.3.07-2.49.1-3.59.1L12 19c-4.19 0-6.8-.16-7.83-.44-.9-.25-1.48-.83-1.73-1.73-.13-.47-.22-1.1-.28-1.9-.07-.8-.1-1.49-.1-2.09L2 12c0-2.19.16-3.8.44-4.83.25-.9.83-1.48 1.73-1.73.47-.13 1.33-.22 2.65-.28 1.3-.07 2.49-.1 3.59-.1L12 5c4.19 0 6.8.16 7.83.44.9.25 1.48.83 1.73 1.73z"/>
-                  </svg>
-                </a>
+                <p className="footer-tagline">
+                  {t.footer.tagline}
+                </p>
+                <div className="social-links">
+                  <a href="#" aria-label="LinkedIn" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
+                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
+                    </svg>
+                  </a>
+                  <a href="#" aria-label="YouTube" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
+                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M10 15l5.19-3L10 9v6m11.56-7.83c.13.47.22 1.1.28 1.9.07.8.1 1.49.1 2.09L22 12c0 2.19-.16 3.8-.44 4.83-.25.9-.83 1.48-1.73 1.73-.47.13-1.33.22-2.65.28-1.3.07-2.49.1-3.59.1L12 19c-4.19 0-6.8-.16-7.83-.44-.9-.25-1.48-.83-1.73-1.73-.13-.47-.22-1.1-.28-1.9-.07-.8-.1-1.49-.1-2.09L2 12c0-2.19.16-3.8.44-4.83.25-.9.83-1.48 1.73-1.73.47-.13 1.33-.22 2.65-.28 1.3-.07 2.49-.1 3.59-.1L12 5c4.19 0 6.8.16 7.83.44.9.25 1.48.83 1.73 1.73z"/>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+
+              <div className="footer-col">
+                <h4 className="footer-col-title">{t.footer.navTitle}</h4>
+                <ul>
+                  <li><a href="#home">{t.nav.home}</a></li>
+                  <li><a href="#about">About JHP</a></li>
+                  <li><a href="#services">Services</a></li>
+                  <li><a href="#contact">{t.nav.contact}</a></li>
+                </ul>
+              </div>
+
+              <div className="footer-col">
+                <h4 className="footer-col-title">{t.footer.marketsTitle}</h4>
+                <ul>
+                  <li><a href="#markets">Korea Market</a></li>
+                  <li><a href="#markets">India Expansion</a></li>
+                  <li><a href="#impact">Our Impact</a></li>
+                </ul>
+              </div>
+
+              <div className="footer-col">
+                <h4 className="footer-col-title">{t.footer.contactTitle}</h4>
+                <p className="footer-info">hello@jhpartners.co.in</p>
+                <p className="footer-info">+91 123 456 7890</p>
               </div>
             </div>
 
-            <div className="footer-col">
-              <h4 className="footer-col-title">{t.footer.navTitle}</h4>
-              <ul>
-                <li><a href="#home">{t.nav.home}</a></li>
-                <li><a href="#about">About JHP</a></li>
-                <li><a href="#services">Services</a></li>
-                <li><a href="#contact">{t.nav.contact}</a></li>
-              </ul>
-            </div>
-
-            <div className="footer-col">
-              <h4 className="footer-col-title">{t.footer.marketsTitle}</h4>
-              <ul>
-                <li><a href="#markets">Korea Market</a></li>
-                <li><a href="#markets">India Expansion</a></li>
-                <li><a href="#impact">Our Impact</a></li>
-              </ul>
-            </div>
-
-            <div className="footer-col">
-              <h4 className="footer-col-title">{t.footer.contactTitle}</h4>
-              <p className="footer-info">hello@jhpartners.co.in</p>
-              <p className="footer-info">+91 123 456 7890</p>
+            <div className="footer-bottom">
+              <p>{t.footer.rights}</p>
+              <div className="legal-links">
+                <a href="#">{t.footer.privacy}</a>
+                <span>|</span>
+                <a href="#">{t.footer.terms}</a>
+              </div>
             </div>
           </div>
-
-          <div className="footer-bottom">
-            <p>{t.footer.rights}</p>
-            <div className="legal-links">
-              <a href="#">{t.footer.privacy}</a>
-              <span>|</span>
-              <a href="#">{t.footer.terms}</a>
-            </div>
-          </div>
-        </div>
-      </footer>
+        </footer>
+      </section>
+      </div>
     </div>
   );
 }
