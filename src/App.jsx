@@ -18,7 +18,11 @@ import {
   Mail,
   Phone,
   Globe,
-  Send
+  Send,
+  Award,
+  Briefcase,
+  FileText,
+  Star
 } from 'lucide-react';
 import './index.css';
 import logoImg from './assets/logo.png';
@@ -453,7 +457,6 @@ const translations = {
 const AnimatedCounter = ({ value, duration = 1800 }) => {
   const [count, setCount] = useState(0);
   const ref = useRef(null);
-  const [hasAnimated, setHasAnimated] = useState(false);
 
   const match = String(value).match(/^(\d+)(.*)$/);
   const targetNumber = match ? parseInt(match[1], 10) : null;
@@ -461,12 +464,12 @@ const AnimatedCounter = ({ value, duration = 1800 }) => {
 
   useEffect(() => {
     if (targetNumber === null) return;
+    
+    let animationFrameId;
 
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && !hasAnimated) {
-          setHasAnimated(true);
-
+        if (entries[0].isIntersecting) {
           let startTimestamp = null;
           const step = (timestamp) => {
             if (!startTimestamp) startTimestamp = timestamp;
@@ -475,12 +478,18 @@ const AnimatedCounter = ({ value, duration = 1800 }) => {
             setCount(Math.floor(easeProgress * targetNumber));
 
             if (progress < 1) {
-              window.requestAnimationFrame(step);
+              animationFrameId = window.requestAnimationFrame(step);
             } else {
               setCount(targetNumber);
             }
           };
-          window.requestAnimationFrame(step);
+          animationFrameId = window.requestAnimationFrame(step);
+        } else {
+          // Reset count and cancel animation when out of view
+          setCount(0);
+          if (animationFrameId) {
+            window.cancelAnimationFrame(animationFrameId);
+          }
         }
       },
       { threshold: 0.2 }
@@ -490,8 +499,13 @@ const AnimatedCounter = ({ value, duration = 1800 }) => {
       observer.observe(ref.current);
     }
 
-    return () => observer.disconnect();
-  }, [targetNumber, duration, hasAnimated]);
+    return () => {
+      observer.disconnect();
+      if (animationFrameId) {
+        window.cancelAnimationFrame(animationFrameId);
+      }
+    };
+  }, [targetNumber, duration]);
 
   if (targetNumber === null) {
     return <span>{value}</span>;
@@ -891,13 +905,15 @@ function App() {
                 />
                 <div className="circular-badge">
                   <svg viewBox="0 0 100 100" width="120" height="120">
-                    <path
-                      id="circlePath"
-                      d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0"
-                      fill="none"
-                    />
+                    <defs>
+                      <path
+                        id="circlePath"
+                        d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0"
+                        fill="none"
+                      />
+                    </defs>
                     <text fontSize="9.5" fontWeight="500" letterSpacing="1.2" fill="#0B1A2C">
-                      <textPath href="#circlePath">
+                      <textPath href="#circlePath" startOffset="50%" textAnchor="middle">
                         {lang === 'ko' ? t.about.badge : (cmsData?.aboutGroup?.badgeText || t.about.badge)}
                       </textPath>
                     </text>
@@ -971,31 +987,37 @@ function App() {
         </section>
 
         <section id="impact" className={`impact-section animate-section snap-main-section ${currentSectionIndex === 3 ? 'is-active' : currentSectionIndex > 3 ? 'is-past' : 'is-future'}`}>
-          <div className="section-container">
-            <span className="section-tag">{lang === 'ko' ? t.impact.tag : (cmsData?.impactGroup?.impactTag || t.impact.tag)}</span>
-            <div className="reveal-mask">
-              <h2 className="impact-title serif-heading reveal-text">
-                {lang === 'ko' ? t.impact.heading : (cmsData?.impactGroup?.impactHeading || t.impact.heading)}
-              </h2>
+          <div className="section-container grid-2 impact-split-layout">
+            <div className="impact-left-col">
+              <span className="section-tag">{lang === 'ko' ? t.impact.tag : (cmsData?.impactGroup?.impactTag || t.impact.tag)}</span>
+              <div className="reveal-mask">
+                <h2 className="section-heading serif-heading reveal-text" style={{ fontSize: '3.8rem', lineHeight: '1.1' }}>
+                  {lang === 'ko' ? t.impact.heading : (cmsData?.impactGroup?.impactHeading || t.impact.heading)}
+                </h2>
+              </div>
+              <p className="section-body reveal-text" style={{ fontSize: '1.1rem', marginTop: '1.5rem', maxWidth: '85%' }}>
+                {lang === 'ko' ? "We have established a strong presence and delivered measurable results for our partners." : "We have established a strong presence and delivered measurable results for our partners. Explore our legacy of driving growth and innovation."}
+              </p>
             </div>
 
-            <div className="impact-stats-grid">
+            <div className="impact-right-col impact-stats-grid">
               {(lang === 'ko'
                 ? t.impact.stats
                 : (cmsData?.impactGroup?.statsList && cmsData.impactGroup.statsList.length > 0
                   ? cmsData.impactGroup.statsList
                   : t.impact.stats)
-              ).map((stat, index) => (
-                <div className="stat-item" key={index}>
-                  <div className="stat-number">
-                    <AnimatedCounter value={stat.number} />
+              ).map((stat, index) => {
+                return (
+                  <div className="stat-item stat-card-box" key={index}>
+                    <div className="stat-number">
+                      <AnimatedCounter value={stat.number} />
+                    </div>
+                    <p className="stat-label">{stat.label}</p>
                   </div>
-                  <p className="stat-label">{stat.label}</p>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
-          {renderDownArrow(4)}
         </section>
 
         <section id="markets" className={`markets-section animate-section snap-main-section ${currentSectionIndex === 4 ? 'is-active' : currentSectionIndex > 4 ? 'is-past' : 'is-future'}`}>
@@ -1053,75 +1075,47 @@ function App() {
 
 
         <section id="portfolio" className={`projects-section animate-section snap-main-section ${currentSectionIndex === 5 ? 'is-active' : currentSectionIndex > 5 ? 'is-past' : 'is-future'}`}>
-          <div className="section-container">
-            <div className="portfolio-header-row">
-              <div>
-                <span className="section-tag">{t.projects.tag}</span>
+          <div className="section-container project-list-archive-container">
+            {/* Archive Header */}
+            <div className="archive-header-wrapper">
+              <div className="archive-header-left">
+                <span className="archive-subtitle-tag">
+                  {lang === 'ko' ? '아카이브 2023—2026' : 'SELECTED ARCHIVE 2023—2026'}
+                </span>
                 <div className="reveal-mask">
-                  <h2 className="section-heading serif-heading reveal-text">
-                    {t.projects.heading}
+                  <h2 className="archive-main-title reveal-text">
+                    {lang === 'ko' ? '프로젝트 리스트' : 'Project list'}<span className="archive-dot">.</span>
                   </h2>
                 </div>
               </div>
-
-              <div className="portfolio-tabs-wrapper">
-                <button
-                  className={`portfolio-tab-btn ${activePortfolioTab === 'ALL' ? 'active-tab' : ''}`}
-                  onClick={() => setActivePortfolioTab('ALL')}
-                  onMouseEnter={() => setIsHovered(true)}
-                  onMouseLeave={() => setIsHovered(false)}
-                >
-                  {lang === 'ko' ? '전체' : 'All Years'}
-                </button>
-                {t.projects.years.map((yObj) => (
-                  <button
-                    key={yObj.year}
-                    className={`portfolio-tab-btn ${activePortfolioTab === yObj.year ? 'active-tab' : ''}`}
-                    onClick={() => setActivePortfolioTab(yObj.year)}
-                    onMouseEnter={() => setIsHovered(true)}
-                    onMouseLeave={() => setIsHovered(false)}
-                  >
-                    {yObj.year}
-                  </button>
-                ))}
-              </div>
             </div>
 
-            <div className="portfolio-content-area">
-              {t.projects.years
-                .filter((yObj) => activePortfolioTab === 'ALL' || activePortfolioTab === yObj.year)
-                .map((yearObj) => {
+            {/* Archive Columns grouped by Year */}
+            <div className="archive-year-columns-grid">
+              {t.projects.years.map((yearObj) => {
                   const allItems = yearObj.columns.flat();
                   return (
-                    <div key={yearObj.year} className="portfolio-year-section">
-                      {activePortfolioTab === 'ALL' && (
-                        <div className="portfolio-year-header-row">
-                          <span className="year-title-badge">{yearObj.year}</span>
-                          <div className="year-title-line"></div>
-                        </div>
-                      )}
-
-                      <div className="portfolio-cards-grid">
+                    <div key={yearObj.year} className="archive-year-column">
+                      <div className="archive-year-heading">
+                        <span className="archive-year-bullet">•</span> {yearObj.year}
+                      </div>
+                      <ul className="archive-item-list">
                         {allItems.map((item, k) => (
-                          <div
+                          <li
                             key={k}
-                            className={`portfolio-card ${item.featured ? 'featured-card' : ''}`}
+                            className="archive-item-row"
                             onMouseEnter={() => setIsHovered(true)}
                             onMouseLeave={() => setIsHovered(false)}
                           >
-                            <div className="portfolio-card-top">
-                              <span className="card-year-pill">{yearObj.year}</span>
-                            </div>
-                            <h4 className="portfolio-card-name">{item.name}</h4>
-                          </div>
+                            <span className="archive-item-name">{item.name}</span>
+                          </li>
                         ))}
-                      </div>
+                      </ul>
                     </div>
                   );
                 })}
             </div>
           </div>
-          {renderDownArrow(6)}
         </section>
 
         <section id="testimonials" className={`testimonial-section animate-section snap-main-section ${currentSectionIndex === 6 ? 'is-active' : currentSectionIndex > 6 ? 'is-past' : 'is-future'}`}>
@@ -1204,39 +1198,6 @@ function App() {
                       );
                     })}
                   </div>
-
-                  <div className="testimonial-bottom-bar">
-                    <div className="testimonial-dots">
-                      {list.map((_, idx) => (
-                        <button
-                          key={idx}
-                          className={`dot-btn ${activeTestimonial % listLength === idx ? 'active-dot' : ''}`}
-                          onClick={() => setActiveTestimonial(idx)}
-                          aria-label={`Go to slide ${idx + 1}`}
-                        />
-                      ))}
-                    </div>
-                    <div className="carousel-controls">
-                      <button
-                        onClick={() => setActiveTestimonial((prev) => (prev - 1 + listLength) % listLength)}
-                        className="carousel-btn"
-                        aria-label="Previous Testimonial"
-                        onMouseEnter={() => setIsHovered(true)}
-                        onMouseLeave={() => setIsHovered(false)}
-                      >
-                        <ChevronLeft size={20} />
-                      </button>
-                      <button
-                        onClick={() => setActiveTestimonial((prev) => (prev + 1) % listLength)}
-                        className="carousel-btn"
-                        aria-label="Next Testimonial"
-                        onMouseEnter={() => setIsHovered(true)}
-                        onMouseLeave={() => setIsHovered(false)}
-                      >
-                        <ChevronRight size={20} />
-                      </button>
-                    </div>
-                  </div>
                 </>
               );
             })()}
@@ -1317,7 +1278,7 @@ function App() {
                   <label htmlFor="message">{t.contact.msgLabel}</label>
                   <textarea
                     id="message"
-                    rows="4"
+                    rows="2"
                     required
                     placeholder={t.contact.msgPlaceholder}
                   ></textarea>
