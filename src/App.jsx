@@ -33,7 +33,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const translations = {
   en: {
-    nav: { home: 'Home', contact: 'Contact Us' },
+    nav: { home: 'Home', about: 'About JHP', services: 'Services', portfolio: 'Portfolio', contact: 'Contact Us' },
     hero: {
       title: (
         <>
@@ -42,8 +42,8 @@ const translations = {
           your <span className="hero-next-italic">next</span> move
         </>
       ),
-      desc: `A Gurgaon-based studio helping Korean brands build the strategy, identity, and market presence to land in India — and stay.`,
-      cta: 'Explore our work',
+      desc: `JHP Enterprise was built upon the foundation of our former affiliate—Korea Indo Traders Pvt. Ltd. established in 1968. Driven by our passion for consulting and marketing and our deep understanding of both Korean and Indian markets, we envisioned a company that would serve as a catalyst for businesses seeking to expand their reach and make a significant impact in the Indian market.`,
+      cta: 'Discover our story',
       secondaryCta: 'Start a project',
     },
     about: {
@@ -55,7 +55,7 @@ const translations = {
           Focused on India.
         </>
       ),
-      body: `JHP Enterprise traces its roots to Korea Indo Traders Pvt. Ltd., established in 1968. With decades of experience and a deep understanding of both Korean and Indian markets, we bring insight, connections and expertise to help businesses grow across borders.`,
+      body: `JHP Enterprise was built upon the foundation of our former affiliate—Korea Indo Traders Pvt. Ltd. established in 1968. Driven by our passion for consulting and marketing and our deep understanding of both Korean and Indian markets, we envisioned a company that would serve as a catalyst for businesses seeking to expand their reach and make a significant impact in the Indian market.`,
       cta: 'Learn more',
       badge: 'BRIDGING MARKETS • BUILDING OPPORTUNITIES •',
     },
@@ -84,6 +84,7 @@ const translations = {
     impact: {
       tag: 'OUR IMPACT',
       heading: 'Proven results across global markets.',
+      body: 'We have established a strong presence and delivered measurable results for our partners. Explore our legacy of driving growth and innovation.',
       stats: [
         { number: '10+', label: 'Years shaping brands' },
         { number: '80+', label: 'Campaigns and projects' },
@@ -111,6 +112,11 @@ const translations = {
     projects: {
       tag: 'OUR PORTFOLIO',
       heading: 'Some of Our Works',
+      subtitleTag: 'SELECTED ARCHIVE 2023—2026',
+      mainTitle: 'Project list',
+      viewList: 'View full project list (35+)',
+      hideList: 'Hide project list',
+      teaserText: 'Explore over 35+ strategic cross-border engagements, marketing campaigns, and government brief events spanning 2023 to 2026.',
       years: [
         {
           year: '2026',
@@ -244,7 +250,7 @@ const translations = {
     },
   },
   ko: {
-    nav: { home: '홈', contact: '문의하기' },
+    nav: { home: '홈', about: '회사 소개', services: '서비스', portfolio: '포트폴리오', contact: '문의하기' },
     hero: {
       title: (
         <>
@@ -253,12 +259,12 @@ const translations = {
           당신의 <span className="hero-next-italic">다음</span> 도약
         </>
       ),
-      desc: `한국 브랜드가 인도의 전략, 정체성 및 시장 입지를 구축할 수 있도록 지원하는 구르가온 기반 스튜디오입니다.`,
-      cta: '작품 둘러보기',
+      desc: `JHP Enterprise는 1968년에 설립된 전 계열사 Korea Indo Traders Pvt. Ltd.의 기반 위에 세워졌습니다. 컨설팅 및 마케팅에 대한 우리의 열정과 한국 및 인도 시장에 대한 깊은 이해를 바탕으로, 인도 시장에서 비즈니스를 확장하고 중요한 영향을 미치고자 하는 기업들의 촉매제 역할을 할 회사를 구상했습니다.`,
+      cta: '우리의 이야기 알아보기',
       secondaryCta: '프로젝트 시작하기',
     },
     about: {
-      tag: 'ABOUT JHP',
+      tag: 'JHP 소개',
       heading: (
         <>
           한국에 뿌리를 두고.
@@ -271,7 +277,7 @@ const translations = {
       badge: '시장을 연결하다 • 기회를 창출하다 •',
     },
     services: {
-      tag: 'WHAT WE DO',
+      tag: '주요 서비스',
       heading: (
         <>
           비즈니스 성장을 위한
@@ -291,8 +297,9 @@ const translations = {
       ],
     },
     impact: {
-      tag: 'OUR IMPACT',
+      tag: '주요 성과',
       heading: '검증된 글로벌 비즈니스 성과.',
+      body: '우리는 파트너들을 위해 견고한 입지를 구축하고 측정 가능한 성과를 입증해 왔습니다. 성숙한 성장과 혁신의 발자취를 확인하세요.',
       stats: [
         { number: '10+', label: '브랜드 성장을 함께한 시간(년)' },
         { number: '80+', label: '성공적인 캠페인 및 프로젝트' },
@@ -301,7 +308,7 @@ const translations = {
       ],
     },
     markets: {
-      tag: 'OUR MARKETS',
+      tag: '주요 시장',
       heading: (
         <>
           두 개의 시장.
@@ -318,24 +325,29 @@ const translations = {
       ],
     },
     projects: {
-      tag: 'OUR PORTFOLIO',
+      tag: '포트폴리오',
       heading: '주요 사업 실적',
+      subtitleTag: '아카이브 2023—2026',
+      mainTitle: '프로젝트 리스트',
+      viewList: '전체 프로젝트 리스트 보기 (35+)',
+      hideList: '접기',
+      teaserText: '2023년부터 2026년까지 한국과 인도를 잇는 35개 이상의 주요 비즈니스 브리핑, 행사 및 마케팅 프로젝트 아카이브입니다.',
       years: [
         {
           year: '2026',
           columns: [
             [
-              { name: 'KOCCA India 2026 비즈니스 브리핑 행사', featured: true },
+              { name: 'KOCCA 인도 2026 비즈니스 브리핑 행사', featured: true },
               { name: 'PT SU Indonesia 인도 법인 설립', featured: false },
-              { name: 'KOCCA India 온·오프라인 마케팅', featured: true },
-              { name: 'KOCCA India K-Content Bizcon 2026 행사', featured: true },
+              { name: 'KOCCA 인도 온·오프라인 마케팅', featured: true },
+              { name: 'KOCCA 인도 K-콘텐츠 비즈콘 2026 행사', featured: true },
             ],
             [
-              { name: 'Healstem India CA 서비스', featured: false },
+              { name: '힐스템 인도 CA 서비스', featured: false },
               { name: '제주 삼다수 온라인 마케팅', featured: false },
-              { name: 'KOSME India 디지털 마케팅', featured: false },
+              { name: '중소벤처기업진흥공단(KOSME) 인도 디지털 마케팅', featured: false },
               { name: '현대자동차 인도 광고 지원', featured: false },
-              { name: 'Knowledge Building on Korean Aqua & Seafood Practices', featured: false },
+              { name: '한국 수산·해양 기술 지식 구축 및 교류', featured: false },
             ]
           ]
         },
@@ -344,24 +356,24 @@ const translations = {
           columns: [
             [
               { name: '화성 모빌리티 인도 컨설팅', featured: false },
-              { name: 'Messe Esang 인도 법인 설립', featured: false },
+              { name: '메쎄이상 인도 법인 설립', featured: false },
               { name: '현대자동차 본부장 인도 방문 지원', featured: true },
               { name: '삼성 케어 플러스 시장 조사', featured: false },
-              { name: 'VIP 델리 투어 의전 및 호스피탈리티 서비스', featured: true },
-              { name: 'BANDO 이커머스 플랫폼 브랜드 관리', featured: false },
-              { name: 'KOSME B2B & B2C 마케팅', featured: true },
+              { name: '효성 인도 VIP 델리 투어 의전 및 호스피탈리티 서비스', featured: true },
+              { name: '반도(BANDO) 이커머스 플랫폼 브랜드 관리', featured: false },
+              { name: '중소벤처기업진흥공단(KOSME) B2B & B2C 마케팅', featured: true },
             ],
             [
               { name: '경기 청년 사다리 프로그램 2024', featured: true },
-              { name: 'KOSME Katch Your Brand 2024', featured: true },
-              { name: 'Legal Advisory for KOIPA', featured: false },
-              { name: 'K-Content Expo in India', featured: true },
-              { name: 'Legal Advisory for Kinexin', featured: false },
-              { name: 'KOINDEX 2024', featured: true },
-              { name: 'KOSME B2B 네트워킹 세미나', featured: true },
-              { name: 'Seoul My Soul, India', featured: true },
-              { name: '인도 수출 제품 모조품 단속 및 식별', featured: true },
-              { name: 'Grand Opening of Dreamtech India', featured: true },
+              { name: '중소벤처기업진흥공단 Katch Your Brand 2024', featured: true },
+              { name: 'KOIPA(한국지식재산보호원) 법률 자문', featured: false },
+              { name: '인도 K-콘텐츠 엑스포', featured: true },
+              { name: '킨엑신(Kinexin) 법률 자문', featured: false },
+              { name: 'KOINDEX 2024 (대한민국 산업박람회)', featured: true },
+              { name: '중소벤처기업진흥공단 B2B 네트워킹 세미나', featured: true },
+              { name: '서울 마이 소울 (Seoul My Soul, India)', featured: true },
+              { name: '인도 내 브랜드 모조품 단속 및 식별', featured: true },
+              { name: '드림텍 인도 법인 개소식', featured: true },
             ]
           ]
         },
@@ -369,9 +381,9 @@ const translations = {
           year: '2024',
           columns: [
             [
-              { name: 'IKS Semicon 컨설팅', featured: false },
-              { name: 'Healstem India 법인 설립', featured: false },
-              { name: 'MARS Korea (HMIM) 법인 설립', featured: false },
+              { name: 'IKS 반도체 컨설팅', featured: false },
+              { name: '힐스템 인도 법인 설립', featured: false },
+              { name: 'MARS 코리아 (HMIM) 법인 설립', featured: false },
             ]
           ]
         },
@@ -379,15 +391,15 @@ const translations = {
           year: '2023',
           columns: [
             [
-              { name: 'Mumbai K-Town Festival India', featured: true },
-              { name: 'Christmas Soiree, Leo\'s 621', featured: true },
-              { name: 'Lenovo 한국 시장 노출 마케팅', featured: false },
-              { name: 'Market Exposure for iYura in Korea', featured: false },
+              { name: '인도 뭄바이 K-타운 페스티벌', featured: true },
+              { name: '크리스마스 소아레 (Leo\'s 621)', featured: true },
+              { name: '레노버(Lenovo) 한국 시장 노출 마케팅', featured: false },
+              { name: '아이유라(iYura) 한국 시장 노출 마케팅', featured: false },
               { name: '뉴델리 G-20 정상회의 지원', featured: true },
-              { name: 'CJ Darcl & Tata MOU 체결', featured: true },
-              { name: '지속 가능한 기업 육성 콘클라베', featured: true },
-              { name: 'Market Exposure for J2LFA', featured: false },
-              { name: 'Gyeonggi Youth Training Program 2023', featured: true },
+              { name: 'CJ대한통운(CJ Darcl) & 타타(Tata) MOU 체결', featured: true },
+              { name: '지역 발전을 위한 지속 가능한 기업 육성 콘클라베', featured: true },
+              { name: 'J2LFA 한국 시장 노출 마케팅', featured: false },
+              { name: '경기 청년 사다리 프로그램 2023', featured: true },
             ]
           ]
         }
@@ -417,7 +429,7 @@ const translations = {
       },
     ],
     contact: {
-      tag: 'GET IN TOUCH',
+      tag: '문의하기',
       heading: (
         <>
           다음 도약을
@@ -447,8 +459,9 @@ const translations = {
       navTitle: '바로가기',
       marketsTitle: '주요 시장',
       contactTitle: '문의하기',
-      rights: '© 2026 JHP Enterprise. All rights reserved.',
+      rights: '© 2026 JHP Enterprise. 모든 권리 보유.',
       privacy: '개인정보처리방침',
+      terms: '이용약관',
     },
   },
 };
@@ -553,13 +566,13 @@ function App() {
   const t = translations[lang] || translations.en;
 
   const mainSections = [
-    { id: 'home', label: 'Home' },
-    { id: 'about', label: 'About JHP' },
-    { id: 'services', label: 'Services' },
-    { id: 'impact', label: 'Our Impact' },
-    { id: 'markets', label: 'Our Markets' },
-    { id: 'portfolio', label: 'Our Portfolio' },
-    { id: 'contact', label: 'Contact Us' }
+    { id: 'home', label: t.nav.home },
+    { id: 'about', label: t.nav.about },
+    { id: 'services', label: t.nav.services },
+    { id: 'impact', label: lang === 'ko' ? '주요 성과' : 'Our Impact' },
+    { id: 'markets', label: lang === 'ko' ? '주요 시장' : 'Our Markets' },
+    { id: 'portfolio', label: t.nav.portfolio },
+    { id: 'contact', label: t.nav.contact }
   ];
 
   const goToSectionIndex = (index) => {
@@ -773,7 +786,7 @@ function App() {
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
             >
-              About JHP
+              {t.nav.about}
             </a>
             <a
               href="#services"
@@ -781,7 +794,7 @@ function App() {
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
             >
-              Services
+              {t.nav.services}
             </a>
             <a
               href="#portfolio"
@@ -789,7 +802,7 @@ function App() {
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
             >
-              Portfolio
+              {t.nav.portfolio}
             </a>
             <a
               href="#contact"
@@ -990,7 +1003,7 @@ function App() {
                 </h2>
               </div>
               <p className="section-body reveal-text" style={{ fontSize: '1.1rem', marginTop: '1.5rem', maxWidth: '85%' }}>
-                {lang === 'ko' ? "We have established a strong presence and delivered measurable results for our partners." : "We have established a strong presence and delivered measurable results for our partners. Explore our legacy of driving growth and innovation."}
+                {t.impact.body}
               </p>
             </div>
 
@@ -1030,7 +1043,13 @@ function App() {
             <span className="section-tag">{lang === 'ko' ? t.markets.tag : (cmsData?.marketsGroup?.marketsTag || t.markets.tag)}</span>
             <div className="reveal-mask">
               <h2 className="section-heading serif-heading reveal-text">
-                {lang === 'ko' ? t.markets.heading : (cmsData?.marketsGroup?.marketsHeading || t.markets.heading)}
+                {lang === 'ko' ? t.markets.heading : (
+                  (typeof cmsData?.marketsGroup?.marketsHeading === 'string') ? (
+                    cmsData.marketsGroup.marketsHeading.split(/(One opportunity)/i).map((part, i) => 
+                      part.toLowerCase() === 'one opportunity' ? <React.Fragment key={i}><br/>{part}</React.Fragment> : <React.Fragment key={i}>{part}</React.Fragment>
+                    )
+                  ) : t.markets.heading
+                )}
               </h2>
             </div>
             <p className="section-body">
@@ -1066,19 +1085,17 @@ function App() {
         </div>
       </section>
 
-
-
         <section id="portfolio" className={`projects-section animate-section snap-main-section ${currentSectionIndex === 5 ? 'is-active' : currentSectionIndex > 5 ? 'is-past' : 'is-future'}`}>
           <div className="section-container project-list-archive-container">
             {/* Archive Header */}
             <div className="archive-header-wrapper">
               <div className="archive-header-left">
                 <span className="archive-subtitle-tag">
-                  {lang === 'ko' ? '아카이브 2023—2026' : 'SELECTED ARCHIVE 2023—2026'}
+                  {t.projects.subtitleTag}
                 </span>
                 <div className="reveal-mask">
                   <h2 className="archive-main-title reveal-text">
-                    {lang === 'ko' ? '프로젝트 리스트' : 'Project list'}<span className="archive-dot">.</span>
+                    {t.projects.mainTitle}<span className="archive-dot">.</span>
                   </h2>
                 </div>
               </div>
@@ -1090,9 +1107,7 @@ function App() {
                 onMouseLeave={() => setIsHovered(false)}
               >
                 <span>
-                  {isArchiveOpen
-                    ? (lang === 'ko' ? '접기' : 'Hide project list')
-                    : (lang === 'ko' ? '전체 프로젝트 리스트 보기 (35+)' : 'View full project list (35+)')}
+                  {isArchiveOpen ? t.projects.hideList : t.projects.viewList}
                 </span>
                 <ChevronDown className="archive-toggle-icon" size={18} />
               </button>
@@ -1104,16 +1119,14 @@ function App() {
                 <div className="archive-teaser-banner">
                   <div className="archive-teaser-info">
                     <p className="archive-teaser-text">
-                      {lang === 'ko' 
-                        ? '2023년부터 2026년까지 한국과 인도를 잇는 35개 이상의 주요 비즈니스 브리핑, 행사 및 마케팅 프로젝트 아카이브입니다.' 
-                        : 'Explore over 35+ strategic cross-border engagements, marketing campaigns, and government brief events spanning 2023 to 2026.'}
+                      {t.projects.teaserText}
                     </p>
                   </div>
                   <div className="archive-featured-chips">
-                    <div className="featured-chip"><span>2026</span> KOCCA India K-Content Bizcon</div>
-                    <div className="featured-chip"><span>2025</span> Hyundai Motor Director Visit</div>
-                    <div className="featured-chip"><span>2024</span> KOINDEX & K-Content Expo</div>
-                    <div className="featured-chip"><span>2023</span> G-20 Leaders' Summit</div>
+                    <div className="featured-chip"><span>2026</span> {lang === 'ko' ? 'KOCCA 인도 K-콘텐츠 비즈콘' : 'KOCCA India K-Content Bizcon'}</div>
+                    <div className="featured-chip"><span>2025</span> {lang === 'ko' ? '현대자동차 본부장 인도 방문' : 'Hyundai Motor Director Visit'}</div>
+                    <div className="featured-chip"><span>2024</span> {lang === 'ko' ? 'KOINDEX & K-콘텐츠 엑스포' : 'KOINDEX & K-Content Expo'}</div>
+                    <div className="featured-chip"><span>2023</span> {lang === 'ko' ? '뉴델리 G-20 정상회의' : "G-20 Leaders' Summit"}</div>
                   </div>
                 </div>
               </div>
@@ -1267,30 +1280,30 @@ function App() {
                 <h4 className="footer-col-title">{t.footer.navTitle}</h4>
                 <ul>
                   <li><a href="#home" onClick={(e) => { e.preventDefault(); goToSectionIndex(0); }}>{t.nav.home}</a></li>
-                  <li><a href="#about" onClick={(e) => { e.preventDefault(); goToSectionIndex(1); }}>About JHP</a></li>
-                  <li><a href="#services" onClick={(e) => { e.preventDefault(); goToSectionIndex(2); }}>Services</a></li>
-                  <li><a href="#portfolio" onClick={(e) => { e.preventDefault(); goToSectionIndex(5); }}>Portfolio</a></li>
+                  <li><a href="#about" onClick={(e) => { e.preventDefault(); goToSectionIndex(1); }}>{t.nav.about}</a></li>
+                  <li><a href="#services" onClick={(e) => { e.preventDefault(); goToSectionIndex(2); }}>{t.nav.services}</a></li>
+                  <li><a href="#portfolio" onClick={(e) => { e.preventDefault(); goToSectionIndex(5); }}>{t.nav.portfolio}</a></li>
                 </ul>
               </div>
 
               <div className="footer-col">
                 <h4 className="footer-col-title">{t.footer.marketsTitle}</h4>
                 <ul>
-                  <li><a href="#markets" onClick={(e) => { e.preventDefault(); goToSectionIndex(4); }}>Korea Market</a></li>
-                  <li><a href="#markets" onClick={(e) => { e.preventDefault(); goToSectionIndex(4); }}>India Expansion</a></li>
-                  <li><a href="#impact" onClick={(e) => { e.preventDefault(); goToSectionIndex(3); }}>Our Impact</a></li>
+                  <li><a href="#markets" onClick={(e) => { e.preventDefault(); goToSectionIndex(4); }}>{lang === 'ko' ? '한국 시장' : 'Korea Market'}</a></li>
+                  <li><a href="#markets" onClick={(e) => { e.preventDefault(); goToSectionIndex(4); }}>{lang === 'ko' ? '인도 시장 진출' : 'India Expansion'}</a></li>
+                  <li><a href="#impact" onClick={(e) => { e.preventDefault(); goToSectionIndex(3); }}>{lang === 'ko' ? '주요 성과' : 'Our Impact'}</a></li>
                 </ul>
               </div>
 
               <div className="footer-col">
                 <h4 className="footer-col-title">{t.footer.contactTitle}</h4>
                 <div className="footer-info-item">
-                  <span className="footer-info-label">Email</span>
+                  <span className="footer-info-label">{t.contact.emailLabel}</span>
                   <p className="footer-info-val">hello@jhpartners.co.in</p>
                 </div>
                 <div className="footer-info-item">
-                  <span className="footer-info-label">Presence</span>
-                  <p className="footer-info-val">Seoul & New Delhi</p>
+                  <span className="footer-info-label">{lang === 'ko' ? '글로벌 거점' : 'Presence'}</span>
+                  <p className="footer-info-val">{lang === 'ko' ? '서울 및 뉴델리' : 'Seoul & New Delhi'}</p>
                 </div>
               </div>
             </div>
@@ -1298,7 +1311,7 @@ function App() {
             <div className="footer-bottom">
               <p>{t.footer.rights}</p>
               <div className="footer-location-badge">
-                <span>🌐</span> Seoul • New Delhi
+                <span>🌐</span> {lang === 'ko' ? '서울 • 뉴델리' : 'Seoul • New Delhi'}
               </div>
               <div className="legal-links">
                 <a href="#">{t.footer.privacy}</a>
